@@ -1,10 +1,11 @@
 # IndiaVaccineFinderUtility
 
-## To use the CLI script vaccine_finder_cli.sh
+## CLI script vaccine_finder_cli.sh
+This script will check for available vaccines in Delhi and Ghaziabad every 15 minutes and output avialable slots on the command line
 
 **Installation**
 * Install JQ using "brew install jq"
-* Download attached script, change extension from .txt to .sh and change permission using chmod 755 
+* Download attached script, change permission using chmod 755 
 
 **Using Script**
 * Script will find available open appointments for coming days starting today
