@@ -1,1 +1,1 @@
-# IndianVaccineFinderUtility
+# IndiaVaccineFinderUtility
