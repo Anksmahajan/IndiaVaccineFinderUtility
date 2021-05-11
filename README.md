@@ -1,7 +1,7 @@
 # IndiaVaccineFinderUtility
 
 ## CLI script vaccine_finder_cli.sh
-This script will check for available vaccines in Delhi and Ghaziabad every 15 minutes and output avialable slots on the command line
+This script will check for available vaccines slots in Delhi and Ghaziabad every 15 minutes and display them on the command line
 
 **Installation**
 * Install JQ using "brew install jq"
@@ -9,7 +9,7 @@ This script will check for available vaccines in Delhi and Ghaziabad every 15 mi
 
 **Using Script**
 * Script will find available open appointments for coming days starting today
-* If no argument is provided to the script it will check for all age groups [./vaccine_finder_cli.sh 18]
+* If no argument is provided to the script it will check for all age groups [./vaccine_finder_cli.sh]
 * To look for vaccines for 18+ use argument 18 [./vaccine_finder_cli.sh 18]
 * To look for vaccines for 45+ use argument 45 [./vaccine_finder_cli.sh 45]
 
