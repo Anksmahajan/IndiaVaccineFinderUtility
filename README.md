@@ -1,6 +1,6 @@
 # IndiaVaccineFinderUtility
 
-## To use the CLI script
+## To use the CLI script vaccine_finder_cli.sh
 
 **Installation**
 * Install JQ using "brew install jq"
