@@ -1,7 +1,7 @@
 # IndiaVaccineFinderUtility
 
 ## CLI script vaccine_finder_cli.sh
-This script will check for available vaccines slots for COVISHIELD in Delhi and Ghaziabad every 15 minutes and display them on the command line
+This script will check for available vaccines slots for COVISHIELD in Delhi and Ghaziabad every 5 minutes and display them on the command line
 
 **Installation**
 * Install JQ using "brew install jq"
