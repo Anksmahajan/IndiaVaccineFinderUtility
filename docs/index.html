@@ -310,7 +310,7 @@ function findVaccine() {
   
        $.ajax({
            url: url,
-           headers: {"origin": "http://localhost", "accept": "application/json"}
+           headers: {"accept": "application/json"}
        }).done(function (response) {
 
          $("#loaderDiv").hide();
