@@ -239,15 +239,14 @@
 
 <script>
 
-
 function findVaccine() {
 
     let matched = [];
     let vacccineType = document.getElementById("vaccineTypeSelect").value;
     let ageGroup = document.getElementById("ageGroupSelect").value;
 
-    console.log("vacccineType=" + vacccineType);
-    console.log("ageGroup=" + ageGroup);
+    //console.log("vacccineType=" + vacccineType);
+    //console.log("ageGroup=" + ageGroup);
 
     // Reset the Table rows
     var table = document.getElementById("responseTable");
@@ -258,72 +257,83 @@ function findVaccine() {
       }
      }
 
+     // Set the district ids interested in
+     let districtIds = [651]; // Ghaziabad
+     for (let did = 140; did < 151; did++) { // All Delhi districts
+      districtIds.push(did);
+     }
+
+
+     var resutFound = false;
+
      // Make the AJAX call
-    let url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=651&date=11-05-2021";
+     for (let index = 0; index < districtIds.length; index++) {
+
+       $("#loaderDiv").show();
+
+       let url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtIds[index] + "&date=11-05-2021";
   
-    $("#loaderDiv").show();
-    $.ajax({
-        url: url,
-        headers: {"Origin": "http://localhost", "accept": "application/json"}
-    }).done(function (response) {
-    
-     $("#loaderDiv").hide();
-     let centers = response.centers;
-     var index = 1;
- 
+       $.ajax({
+           url: url
+       }).done(function (response) {
 
-     if (null !== centers && centers.length > 0) {
+         $("#loaderDiv").hide();
+         let centers = response.centers;
+        
+         if (null !== centers && centers.length > 0) {
 
-      index = 1;
-      let len = centers.length;
-     
-      for (let i = 0; i < len; i++) {
-        let len1 =  centers[i].sessions.length;
-         for (let j = 0; j < len1; j++) {
-          let sessionElm = centers[i].sessions[j];
+            let len = centers.length;
+        
+            for (let i = 0; i < len; i++) {
+              let len1 =  centers[i].sessions.length;
+               for (let j = 0; j < len1; j++) {
+                let sessionElm = centers[i].sessions[j];
    
-          if (sessionElm.available_capacity > 0 && sessionElm.min_age_limit == ageGroup && sessionElm.vaccine == vacccineType) {
-            index++;
+                if (sessionElm.available_capacity > 0 && sessionElm.min_age_limit == ageGroup && sessionElm.vaccine == vacccineType) {
+                  resutFound = true;
+                
+                  $("#responseDiv").show();    
+                  $("#headerDiv").html("<p>Found hospitals with availability! </p>");
 
-          
-            $("#responseDiv").show();    
-            $("#headerDiv").html("<p>Found hospitals with availability! </p>");
+                  let table = document.getElementById("responseTable");
 
-            let table = document.getElementById("responseTable");
+                  let row = table.insertRow(1);
+                  
+                  let cell0 = row.insertCell(0);
+                  cell0.innerHTML = sessionElm.date;
 
-            let row = table.insertRow(1);
-            
-            let cell0 = row.insertCell(0);
-            cell0.innerHTML = sessionElm.date;
+                  let cell1 = row.insertCell(1);
+                  cell1.innerHTML = sessionElm.available_capacity;
 
-            let cell1 = row.insertCell(1);
-            cell1.innerHTML = sessionElm.available_capacity;
+                  let cell2 = row.insertCell(2);
+                  cell2.innerHTML = centers[i].name;
 
-            let cell2 = row.insertCell(2);
-            cell2.innerHTML = centers[i].name;
+                  let cell3 = row.insertCell(3);
+                  cell3.innerHTML = centers[i].address;
 
-            let cell3 = row.insertCell(3);
-            cell3.innerHTML = centers[i].address;
+                  let cell4 = row.insertCell(4);
+                  cell4.innerHTML = sessionElm.slots.map(slot => {
+                    return  slot + "<br/>";
 
-            let cell4 = row.insertCell(4);
-            cell4.innerHTML = sessionElm.slots.map(slot => {
-              return  slot + "<br/>";
+                  });      
+                }
+               }       
+           }
+         } 
 
-            });      
-          }
-         }       
-      }
-    } 
+        if (!resutFound) {
+          $("#responseDiv").hide();
+          $("#headerDiv").html(" <p> No Matching results found! </p>");
+        }
 
-    if (index == 1) {
-      $("#responseDiv").hide();
-      $("#headerDiv").html(" <p> No Matching results found! </p>");
+
+     });
+
     }
-  
 
-  });
+    // Re-call this method after 15 minutes
+    setTimeout(findVaccine, 900000);    
 
-
-}
+  }
 
 </script>
