@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<HEAD>
+  <title>Delhi and Ghaziabad Vacccine Finder</title>
+  
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
+  <link href='https://fonts.googleapis.com/css?family=Sanchez|Orbitron' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css"
+          href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/>
+
+  <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+  <script src="https://cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
+  <script src="https://cdn.datatables.net/scroller/2.0.3/js/dataTables.scroller.min.js"></script>
+  
+  <style>
+    * {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Sanchez', sans-serif;
+      color: #777;
+    }
+
+    body .dataTable{
+        font-family: 'Sanchez', sans-serif;
+        font-size: 14px;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Orbitron', sans-serif;
+      font-weight: bold;
+      color: rgb(75, 75, 75);
+    }
+
+    #container {
+      width: 100%;
+      height: 80%;
+    }
+
+    .header, .footer {
+      font-family: 'Orbitron', sans-serif;
+      max-width: 1024px;
+      margin: 0 auto 10px auto;
+      text-align: center;
+      background: #fff;
+      letter-spacing: 0.05em;
+    }
+
+    #heading {
+      padding: 8px 0 0 0;
+      font-size: 36px;
+      margin-bottom: 5px;
+    }
+
+    input[type=button] { 
+      font-family: 'Sanchez', sans-serif;
+      font-size: 12pt;
+      background-color: #4B0082;
+      color: #fff;
+      padding: .25em .6em;
+      border: 0 rgba(0, 0, 0, 0);
+      border-radius: 3px;
+      vertical-align: inherit;
+      cursor: pointer;
+      height: 25pt;
+      width: 70pt;
+      margin: 1pt
+    }
+
+    input[type=text] {
+      font-family: 'Sanchez', sans-serif;
+      font-weight: 500;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: .25em .4em;
+      height: 26pt;
+      font-size: 13pt;
+      margin: 1pt
+    }
+
+    select {
+      font-family: 'Sanchez', sans-serif;
+      font-size: 12pt;
+      font-weight: 500;
+      height: 25pt;
+      padding: .2em .0em;
+      -webkit-appearance: menulist-button;
+      margin: 1pt
+    }
+
+    #error {
+      font: inherit;
+      font-size: 10pt;
+      padding-top: 8px;
+      color: red;
+    }
+
+    li {
+      font: inherit;
+      font-size: 10pt;
+    }
+
+    #id_value {
+      width: 400px;
+    }
+
+    .autocomplete-suggestions {
+      border: 1px solid #999;
+      background: #FFF;
+      overflow: auto;
+    }
+
+    .autocomplete-suggestion {
+      padding: 2px 5px;
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .autocomplete-selected {
+      background: #F0F0F0;
+    }
+
+    .autocomplete-suggestions strong {
+      font-weight: normal;
+      color: #3399FF;
+    }
+
+    .autocomplete-group {
+      padding: 2px 5px;
+    }
+
+    .autocomplete-group strong {
+      display: block;
+      border-bottom: 1px solid #000;
+    }
+
+    .ta-c {
+      text-align: center;
+    }
+   
+    .clearfix {
+      clear: both;
+    }
+
+   td {
+    word-wrap: break-word;
+   }
+
+    .table-striped > tbody > tr.selected {
+        background-color: #4B0082;
+        color: white;
+    }
+
+    .table-striped > tbody > tr.selected a {
+        color: white;
+    }
+    .dataTables_scrollHeadInner{
+        width:100% !important;
+    }
+    .dataTables_scrollHeadInner table{
+        width:100% !important;
+    }
+
+    .loader {
+          border: 16px solid #f3f3f3;
+          border-radius: 50%;
+          border-top: 16px solid blue;
+          border-bottom: 16px solid blue;
+          width: 120px;
+          height: 120px;
+          -webkit-animation: spin 2s linear infinite;
+          animation: spin 2s linear infinite;
+    }
+
+    @-webkit-keyframes spin {
+      0% { -webkit-transform: rotate(0deg); }
+      100% { -webkit-transform: rotate(360deg); }
+    }
+
+   @keyframes spin {
+     0% { transform: rotate(0deg); }
+     100% { transform: rotate(360deg); }
+   }
+
+  </style>
+
+</HEAD>
+
+
+<body>
+  
+  <table id="tblUserFilters">
+      <tr>
+          <td>Vaccine Type</td>
+          <td> 
+              <select id="vaccineTypeSelect"> 
+                    <option value="COVISHIELD">COVISHIELD</option>
+                    <option value="COVAXIN">COVAXIN</option>
+              </select>
+         </td>
+      </tr>
+      <tr>
+          <td>Age Group</td>
+          <td> 
+              <select id="ageGroupSelect"> 
+                    <option value="18">18+</option>
+                    <option value="45">45+</option>
+              </select>
+         </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <input id="go" type="button" value="Go" onclick="findVaccine()" />
+        </td>
+      </tr>
+  </table>
+
+  <div id="loaderDiv" class="loader" style="display:none"> 
+   
+  </div>
+
+  <div id="headerDiv" style="width:100%;"></div>
+  <div id="responseDiv" style="width:100%;display:none"> 
+    <table id="responseTable" style="width:100%">
+        <thead>
+          <tr>
+            <th>Date</th>
+            <th>Capacity</th>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Slots</th>
+          </tr>
+      </thead>
+    </table>
+
+  </div>
+
+</body>
+
+<script>
+
+
+function findVaccine() {
+
+    let matched = [];
+    let vacccineType = document.getElementById("vaccineTypeSelect").value;
+    let ageGroup = document.getElementById("ageGroupSelect").value;
+
+    console.log("vacccineType=" + vacccineType);
+    console.log("ageGroup=" + ageGroup);
+
+    // Reset the Table rows
+    var table = document.getElementById("responseTable");
+     if (null != table) {
+      let tableRowsLen = table.rows.length;
+      for (let index = 1; index < tableRowsLen; index++) {
+        table.deleteRow(1);
+      }
+     }
+
+     // Make the AJAX call
+    let url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=651&date=11-05-2021";
+  
+    $("#loaderDiv").show();
+    $.ajax({
+        url: url,
+        headers: {"Origin": "http://localhost", "accept": "application/json"}
+    }).done(function (response) {
+    
+     $("#loaderDiv").hide();
+     let centers = response.centers;
+     var index = 1;
+ 
+
+     if (null !== centers && centers.length > 0) {
+
+      index = 1;
+      let len = centers.length;
+     
+      for (let i = 0; i < len; i++) {
+        let len1 =  centers[i].sessions.length;
+         for (let j = 0; j < len1; j++) {
+          let sessionElm = centers[i].sessions[j];
+   
+          if (sessionElm.available_capacity > 0 && sessionElm.min_age_limit == ageGroup && sessionElm.vaccine == vacccineType) {
+            index++;
+
+          
+            $("#responseDiv").show();    
+            $("#headerDiv").html("<p>Found hospitals with availability! </p>");
+
+            let table = document.getElementById("responseTable");
+
+            let row = table.insertRow(1);
+            
+            let cell0 = row.insertCell(0);
+            cell0.innerHTML = sessionElm.date;
+
+            let cell1 = row.insertCell(1);
+            cell1.innerHTML = sessionElm.available_capacity;
+
+            let cell2 = row.insertCell(2);
+            cell2.innerHTML = centers[i].name;
+
+            let cell3 = row.insertCell(3);
+            cell3.innerHTML = centers[i].address;
+
+            let cell4 = row.insertCell(4);
+            cell4.innerHTML = sessionElm.slots.map(slot => {
+              return  slot + "<br/>";
+
+            });      
+          }
+         }       
+      }
+    } 
+
+    if (index == 1) {
+      $("#responseDiv").hide();
+      $("#headerDiv").html(" <p> No Matching results found! </p>");
+    }
+  
+
+  });
+
+
+}
+
+</script>
