@@ -54,8 +54,8 @@ while true; do
   check_ghaziabad
 
   echo "\n\n"
-  echo "Checking every 15 minutes, pres CTRL+C to stop..."
-  sleep 900
+  echo "Checking every 5 minutes, pres CTRL+C to stop..."
+  sleep 300
 done
 
 echo "Script execution completed!"
