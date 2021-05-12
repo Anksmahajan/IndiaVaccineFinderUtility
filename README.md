@@ -14,3 +14,7 @@ This script will check for available vaccines slots for COVISHIELD in Delhi and 
 * To look for vaccines for 45+ use argument 45 [./vaccine_finder_cli.sh 45]
 
 **Note**: If a hospital has at least one available slot you will see all the available as well not available slots for that hospital 
+
+
+## HTML page IndiaVaccineFinder.html
+* Download the file IndiaVaccineFinder.html and double click to open the page in Browser. (Tested on Chrome)
