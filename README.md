@@ -22,3 +22,7 @@ This script will check for available vaccines slots for COVISHIELD in Delhi and 
 
 **Installation**
 * Download the file IndiaVaccineFinder.html and double click to open the page in Browser. (Tested on Chrome)
+
+**Screenshots**
+![image](https://user-images.githubusercontent.com/41709035/118023865-e5bbb780-b312-11eb-9fea-312cf7c01c0a.png)
+
