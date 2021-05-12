@@ -12,7 +12,7 @@ find_vaccine() {
   elif [ "$age_limit" -eq 18 ]; then
     echo "${response}" | jq '.centers[] | select(.sessions[].available_capacity > 0 and .sessions[].vaccine == "COVISHIELD" and .sessions[].min_age_limit == 18)'
   elif [ "$age_limit" -eq 45 ]; then
-    echo "${response}" | jq '.centers[] | select((sessions[].available_capacity > 0 and .sessions[].vaccine == "COVISHIELD" and .sessions[].min_age_limit == 45)'
+    echo "${response}" | jq '.centers[] | select(.sessions[].available_capacity > 0 and .sessions[].vaccine == "COVISHIELD" and .sessions[].min_age_limit == 45)'
   else
     echo "Invalid Age group provided!"
     exit 222
