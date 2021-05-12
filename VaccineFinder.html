@@ -209,6 +209,16 @@
          </td>
       </tr>
       <tr>
+          <td>City</td>
+          <td> 
+              <select id="citySelect"> 
+                    <option value="both" selected>Ghaziabad and Delhi</option>
+                    <option value="ghaziabad">Ghaziabad</option>
+                    <option value="delhi">Delhi</option>
+              </select>
+         </td>
+      </tr>
+      <tr>
         <td colspan="2">
           <input id="go" type="button" value="Go" onclick="findVaccine()" />
         </td>
@@ -239,30 +249,55 @@
 
 <script>
 
-function findVaccine() {
+function getDistrictIds(city) {
+  // Set the district ids interested in
+  let delhiDistrictIds = [];
+  for (let did = 140; did < 151; did++) { // All Delhi districts
+   delhiDistrictIds.push(did);
+  }
 
-    let matched = [];
-    let vacccineType = document.getElementById("vaccineTypeSelect").value;
-    let ageGroup = document.getElementById("ageGroupSelect").value;
+  let ghaziabadDistrictId = 651; 
+  let districtIds = [];
 
-    //console.log("vacccineType=" + vacccineType);
-    //console.log("ageGroup=" + ageGroup);
+  if ('both' == city) {
+     districtIds = delhiDistrictIds.slice();
+     districtIds.push(ghaziabadDistrictId);
+  } else if ('delhi' == city) {
+   districtIds = delhiDistrictIds.slice();
+  } else {
+     districtIds.push(ghaziabadDistrictId);
+  }  
 
-    // Reset the Table rows
-    var table = document.getElementById("responseTable");
+  return districtIds;   
+}
+
+function resetTable() {
+   var table = document.getElementById("responseTable");
      if (null != table) {
       let tableRowsLen = table.rows.length;
       for (let index = 1; index < tableRowsLen; index++) {
         table.deleteRow(1);
       }
      }
+}
 
-     // Set the district ids interested in
-     let districtIds = [651]; // Ghaziabad
-     for (let did = 140; did < 151; did++) { // All Delhi districts
-      districtIds.push(did);
-     }
 
+function findVaccine() {
+
+    let matched = [];
+    let vacccineType = document.getElementById("vaccineTypeSelect").value;
+    let ageGroup = document.getElementById("ageGroupSelect").value;
+    let city = document.getElementById("citySelect").value;
+
+    //console.log("vacccineType=" + vacccineType);
+    //console.log("ageGroup=" + ageGroup);
+    //console.log("city=" + city);
+
+    // Reset the Table rows
+    resetTable();
+    
+     // Get array of district ids
+     let districtIds = getDistrictIds(city);    
 
      var resutFound = false;
 
@@ -274,7 +309,8 @@ function findVaccine() {
        let url = "https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByDistrict?district_id=" + districtIds[index] + "&date=11-05-2021";
   
        $.ajax({
-           url: url
+           url: url,
+           headers: {"origin": "http://localhost", "accept": "application/json"}
        }).done(function (response) {
 
          $("#loaderDiv").hide();
@@ -331,7 +367,7 @@ function findVaccine() {
 
     }
 
-    // Refresh this method after 5 minutes
+    // Re-call this method after 5 minutes
     setTimeout(findVaccine, 300000);    
 
   }
