@@ -17,4 +17,8 @@ This script will check for available vaccines slots for COVISHIELD in Delhi and 
 
 
 ## HTML page IndiaVaccineFinder.html
+* You can look for vaccines of a type and age group for all Delhi districts and Ghaziabad district in one shot
+* The page will auo refresh after 5 minutes to get the latest results, so you do not have to keep refreshing
+
+**Installation**
 * Download the file IndiaVaccineFinder.html and double click to open the page in Browser. (Tested on Chrome)
