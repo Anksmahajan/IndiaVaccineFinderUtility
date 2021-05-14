@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <HEAD>
-  <title>Delhi and Ghaziabad Vacccine Finder</title>
+  <title>India Vacccine Finder</title>
   
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.11.3/themes/smoothness/jquery-ui.css">
   <link href='https://fonts.googleapis.com/css?family=Sanchez|Orbitron' rel='stylesheet' type='text/css'>
@@ -194,9 +194,13 @@
             <td>City</td>
             <td> 
                 <select id="citySelect"> 
-                      <option value="both" selected>Ghaziabad and Delhi</option>
+                      <option value="gzbDelhi" selected>Ghaziabad and Delhi</option>
                       <option value="ghaziabad">Ghaziabad</option>
                       <option value="delhi">Delhi</option>
+                      <option value="amtJaland">Amritsar and Jalandhar</option>                    
+                       <option value="amritsar">Amritsar</option> 
+                        <option value="jalandhar">Jalandhar</option> 
+
                 </select>
            </td>
         </tr>
@@ -236,16 +240,25 @@ function getDistrictIds(city) {
   }
 
   let ghaziabadDistrictId = 651; 
+  let amritsarDistrictId = 485;
+  let jalandharDistrictId = 492;
   let districtIds = [];
 
-  if ('both' == city) {
+  if ('gzbDelhi' == city) {
      districtIds = delhiDistrictIds.slice();
      districtIds.push(ghaziabadDistrictId);
   } else if ('delhi' == city) {
-   districtIds = delhiDistrictIds.slice();
-  } else {
+    districtIds = delhiDistrictIds.slice();
+  } else if ('ghaziabad' == city) {
      districtIds.push(ghaziabadDistrictId);
-  }  
+  } else if ('amtJaland' == city) {
+    districtIds.push(amritsarDistrictId);
+    districtIds.push(jalandharDistrictId);
+  } else if ('amritsar' == city) {
+    districtIds.push(amritsarDistrictId);
+  }  else if ('jalandhar' == city) {
+    districtIds.push(jalandharDistrictId);
+  }
 
   return districtIds;   
 }
@@ -324,7 +337,7 @@ function findVaccine() {
                   cell2.innerHTML = centers[i].name;
 
                   let cell3 = row.insertCell(3);
-                  cell3.innerHTML = centers[i].address;
+                  cell3.innerHTML = centers[i].address + ", " + centers[i].district_name + ", " + centers[i].state_name;
 
                   let cell4 = row.insertCell(4);
                   cell4.innerHTML = sessionElm.slots.map(slot => {
