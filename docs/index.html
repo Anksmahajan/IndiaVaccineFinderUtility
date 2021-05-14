@@ -23,7 +23,7 @@
       color: #777;
     }
 
-    body .dataTable{
+    body table{
         font-family: 'Sanchez', sans-serif;
         font-size: 14px;
     }
@@ -34,10 +34,6 @@
       color: rgb(75, 75, 75);
     }
 
-    #container {
-      width: 100%;
-      height: 80%;
-    }
 
     .header, .footer {
       font-family: 'Orbitron', sans-serif;
@@ -90,10 +86,10 @@
       margin: 1pt
     }
 
-    #error {
+    .error {
       font: inherit;
-      font-size: 10pt;
-      padding-top: 8px;
+      font-size: 15pt;
+      padding-top: 10px;
       color: red;
     }
 
@@ -106,36 +102,6 @@
       width: 400px;
     }
 
-    .autocomplete-suggestions {
-      border: 1px solid #999;
-      background: #FFF;
-      overflow: auto;
-    }
-
-    .autocomplete-suggestion {
-      padding: 2px 5px;
-      white-space: nowrap;
-      overflow: hidden;
-    }
-
-    .autocomplete-selected {
-      background: #F0F0F0;
-    }
-
-    .autocomplete-suggestions strong {
-      font-weight: normal;
-      color: #3399FF;
-    }
-
-    .autocomplete-group {
-      padding: 2px 5px;
-    }
-
-    .autocomplete-group strong {
-      display: block;
-      border-bottom: 1px solid #000;
-    }
-
     .ta-c {
       text-align: center;
     }
@@ -144,9 +110,24 @@
       clear: both;
     }
 
+    div.padding {
+      padding-left: 10px;
+      padding-right: 10px;
+      padding-top: 5px;
+    }
+
    td {
     word-wrap: break-word;
+    text-align: left;
+    padding-left: 2px;
+    padding-top: 5px;
    }
+
+
+  #responseTable td, th {
+   border-collapse: collapse;
+   border: 1px solid black;
+  }
    
    #responseTable tr:nth-child(even) {background: #CCC}
    #responseTable tr:nth-child(odd) {background: #FFF}
@@ -189,62 +170,60 @@
 
 <body>
   
-  <table id="tblUserFilters">
-      <tr>
-          <td>Vaccine Type</td>
-          <td> 
-              <select id="vaccineTypeSelect"> 
-                    <option value="COVISHIELD">COVISHIELD</option>
-                    <option value="COVAXIN">COVAXIN</option>
-              </select>
-         </td>
-      </tr>
-      <tr>
-          <td>Age Group</td>
-          <td> 
-              <select id="ageGroupSelect"> 
-                    <option value="18">18+</option>
-                    <option value="45">45+</option>
-              </select>
-         </td>
-      </tr>
-      <tr>
-          <td>City</td>
-          <td> 
-              <select id="citySelect"> 
-                    <option value="both" selected>Ghaziabad and Delhi</option>
-                    <option value="ghaziabad">Ghaziabad</option>
-                    <option value="delhi">Delhi</option>
-              </select>
-         </td>
-      </tr>
-      <tr>
-        <td colspan="2">
-          <input id="go" type="button" value="Go" onclick="findVaccine()" />
-        </td>
-      </tr>
-  </table>
-
-  <div id="loaderDiv" class="loader" style="display:none"> 
-   
-  </div>
-
-  <div id="headerDiv" style="width:100%;"></div>
-  <div id="responseDiv" style="width:100%;display:none"> 
-    <table id="responseTable" style="width:100%">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Capacity</th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>Slots</th>
-          </tr>
-      </thead>
+  <div class="padding">
+    <table id="tblUserFilters">
+        <tr>
+            <td>Vaccine Type</td>
+            <td> 
+                <select id="vaccineTypeSelect"> 
+                      <option value="COVISHIELD">COVISHIELD</option>
+                      <option value="COVAXIN">COVAXIN</option>
+                </select>
+           </td>
+        </tr>
+        <tr>
+            <td>Age Group</td>
+            <td> 
+                <select id="ageGroupSelect"> 
+                      <option value="18">18+</option>
+                      <option value="45">45+</option>
+                </select>
+           </td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td> 
+                <select id="citySelect"> 
+                      <option value="both" selected>Ghaziabad and Delhi</option>
+                      <option value="ghaziabad">Ghaziabad</option>
+                      <option value="delhi">Delhi</option>
+                </select>
+           </td>
+        </tr>
+        <tr>
+          <td colspan="2">
+            <input id="go" type="button" value="Go" onclick="findVaccine()" />
+          </td>
+        </tr>
     </table>
 
-  </div>
+    <div id="loaderDiv" class="loader" style="display:none"> </div>
 
+    <div id="headerDiv" class="error" style="width:100%;"></div>
+    <div id="responseDiv" style="width:100%;display:none"> 
+      <table id="responseTable" style="width:100%">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Capacity</th>
+              <th>Name</th>
+              <th>Address</th>
+              <th>Slots</th>
+            </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
 </body>
 
 <script>
@@ -310,7 +289,7 @@ function findVaccine() {
   
        $.ajax({
            url: url,
-           headers: {"accept": "application/json"}
+           headers: {"origin": "http://localhost", "accept": "application/json"}
        }).done(function (response) {
 
          $("#loaderDiv").hide();
@@ -359,7 +338,7 @@ function findVaccine() {
 
         if (!resutFound) {
           $("#responseDiv").hide();
-          $("#headerDiv").html(" <p> No Matching results found! </p>");
+          $("#headerDiv").html(" <p> No matching results found! </p>");
         }
 
 
